@@ -21,11 +21,6 @@ import java.util.Random;
 public class ProcesadorYodafy {
 	// Referencia a un socket para enviar/recibir las peticiones/respuestas
 	private Socket socketServicio;
-	// stream de lectura (por aquí se recibe lo que envía el cliente)
-	private InputStream inputStream;
-	// stream de escritura (por aquí se envía los datos al cliente)
-	private OutputStream outputStream;
-	
 	// Para que la respuesta sea siempre diferente, usamos un generador de números aleatorios.
 	private Random random;
 	
@@ -39,22 +34,11 @@ public class ProcesadorYodafy {
 	// Aquí es donde se realiza el procesamiento realmente:
 	public void procesa(){
 		
-		// Como máximo leeremos un bloque de 1024 bytes. Esto se puede modificar.
-		byte [] datosRecibidos=new byte[1024];
-		int bytesRecibidos=0;
-		// Array de bytes para enviar la respuesta. Podemos reservar memoria cuando vayamos a enviarka:
-		byte [] datosEnviar;
-		
 		
 		try {
-			// Obtiene los flujos de escritura/lectura
-			inputStream=socketServicio.getInputStream();
-			outputStream=socketServicio.getOutputStream();
 			
 			PrintWriter outPrintWriter = new PrintWriter(socketServicio.getOutputStream(),true);
 			BufferedReader inReader = new BufferedReader(new InputStreamReader(socketServicio.getInputStream()));
-
-			
 
 			// Lee la frase a Yodaficar:
 
@@ -75,7 +59,9 @@ public class ProcesadorYodafy {
 
 			//datosEnviar=respuesta.getBytes();
 			String peticion = new String(inReader.readLine());
-			System.out.println(peticion);;
+			String respuesta=yodaDo(peticion);
+			outPrintWriter.print(respuesta + "\r\n" );
+			outPrintWriter.flush();
 			//outputStream.write(datosEnviar,0,datosEnviar.length);
 			//outputStream.flush();
 			

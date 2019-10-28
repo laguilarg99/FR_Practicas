@@ -16,9 +16,6 @@ public class YodafyClienteTCP {
 
 	public static void main(String[] args) {
 		
-		byte []buferEnvio;
-		byte []buferRecepcion=new byte[1024];
-		int bytesLeidos=0;
 		
 		// Nombre del host donde se ejecuta el servidor:
 		String host="localhost";
@@ -36,19 +33,16 @@ public class YodafyClienteTCP {
 			PrintWriter outPrintWriter = new PrintWriter(socketServicio.getOutputStream(),true);
 			BufferedReader inReader = new BufferedReader(new InputStreamReader(socketServicio.getInputStream()));
 
-			InputStream inputStream = socketServicio.getInputStream();
-			OutputStream outputStream = socketServicio.getOutputStream();
 			
 			// Si queremos enviar una cadena de caracteres por un OutputStream, hay que pasarla primero
 			// a un array de bytes:
-			buferEnvio="Al monte del volcán debes ir sin demora".getBytes();
-			
+			String Envio = "Al monte del volcán debes ir sin demora";
 			// Enviamos el array por el outputStream;
 			//////////////////////////////////////////////////////
 			// ... .write ... (Completar)
 
 
-			outPrintWriter.print(buferEnvio + "\r\n" );
+			outPrintWriter.print(Envio + "\r\n" );
 			//			outputStream.write(buferEnvio,0,buferEnvio.length);
 			//////////////////////////////////////////////////////
 			
@@ -64,18 +58,17 @@ public class YodafyClienteTCP {
 			// Leemos la respuesta del servidor. Para ello le pasamos un array de bytes, que intentará
 			// rellenar. El método "read(...)" devolverá el número de bytes leídos.
 			//////////////////////////////////////////////////////
-			bytesLeidos= inputStream.read(buferRecepcion);
 			// bytesLeidos ... .read... buferRecepcion ; (Completar)
 			//////////////////////////////////////////////////////
-			String respuesta=new String(buferRecepcion);
+			String respuesta=new String(inReader.readLine());
 			//System.out.println(new String(bufferRecepcion));
 			// MOstremos la cadena de caracteres recibidos:
 			System.out.println("Recibido: ");
 			System.out.println(respuesta);
+			/*
 			for(int i=0;i<bytesLeidos;i++){
 				System.out.print((char)buferRecepcion[i]);
-			}
-			System.out.println("");
+			}*/
 			
 			// Una vez terminado el servicio, cerramos el socket (automáticamente se cierran
 			// el inpuStream  y el outputStream)
