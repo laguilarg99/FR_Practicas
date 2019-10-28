@@ -18,7 +18,7 @@ import java.util.Random;
 // Nota: si esta clase extendiera la clase Thread, y el procesamiento lo hiciera el método "run()",
 // ¡Podríamos realizar un procesado concurrente! 
 //
-public class ProcesadorYodafy {
+public class ProcesadorYodafy implements Runnable{
 	// Referencia a un socket para enviar/recibir las peticiones/respuestas
 	private Socket socketServicio;
 	// Para que la respuesta sea siempre diferente, usamos un generador de números aleatorios.
@@ -32,7 +32,7 @@ public class ProcesadorYodafy {
 	
 	
 	// Aquí es donde se realiza el procesamiento realmente:
-	public void procesa(){
+	public void run(){
 		
 		
 		try {
