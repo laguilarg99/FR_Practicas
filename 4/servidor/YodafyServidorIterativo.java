@@ -24,13 +24,12 @@ public class YodafyServidorIterativo {
 		try {
 			// Abrimos el socket en modo pasivo, escuchando el en puerto indicado por "port"
 			//////////////////////////////////////////////////
-			socketServidor = new DatagramSocket(port);
 			//////////////////////////////////////////////////
 			
 
 			// Mientras ... siempre!
 			do {
-				
+				socketServidor = new DatagramSocket(port);
 				// Aceptamos una nueva conexión con accept()
 				/////////////////////////////////////////////////
 				 //socketServicio= socketServidor.accept();
@@ -46,6 +45,7 @@ public class YodafyServidorIterativo {
 				ProcesadorYodafy procesador=new ProcesadorYodafy(socketServicio);
 				procesador.procesar();
 				socketServicio.close();			
+
 			} while (true);
 			
 		} catch (IOException e) {

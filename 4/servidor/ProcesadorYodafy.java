@@ -49,8 +49,7 @@ public class ProcesadorYodafy {
 			paqueteEnviar = new DatagramPacket(datosEnviar, datosEnviar.length, paquete.getAddress(), paquete.getPort());
 			socketServicio.send(paqueteEnviar);
 		} catch (IOException e) {
-			System.err.println("Error al obtener los flujso de entrada/salida.");
-			System.exit(-1);
+			System.err.println("Error al obtener los flujo de entrada/salida.");
 		}
 
 	}
