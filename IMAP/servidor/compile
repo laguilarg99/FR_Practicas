@@ -1,0 +1,5 @@
+#! /bin/bash
+javac -d . controlador.java 
+javac -d . modelo.java
+javac IMAPServidor.java
+
