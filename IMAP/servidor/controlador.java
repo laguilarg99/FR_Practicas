@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import servicio.modelo;
+
 public class controlador implements Runnable
 {
 	private Socket socketServicio;
@@ -18,36 +20,86 @@ public class controlador implements Runnable
 	}
 	
     public void run()
-    {		
+    {	
 		try {
 			PrintWriter outPrintWriter = new PrintWriter(socketServicio.getOutputStream(),true);
 			BufferedReader inReader = new BufferedReader(new InputStreamReader(socketServicio.getInputStream()));
+            String peticion = null;
 
             if((peticion = inReader.readLine()) != null){
                 String[] Argumento = obtenerArgumentos(peticion);
 
-                switch(Argumento[0]) {
-                    case "AUTH":
-                      // code block
-                      break;
-                    case "MEntra":
-                      // code block
-                      break;
-                    default:
-                      // code block
-                  }
-            } else {
-			    System.err.println("No se han recibido datos.");
+                if(Argumento[0] == "AUTH"){
+                    if(Argumento.length == 3){
+                        if(modelo.autenticar(Argumento[1], Argumento[2])){
+                            outPrintWriter.print("#AUTH#OK#Autenticacion correcta#");
+                            outPrintWriter.flush(); 
+                            Boolean closed = false;
+                            do {
+                                if((peticion = inReader.readLine()) != null){
+                                    switch(Argumento[0]) {
+                                        case "MENTRADA":
+                                            if(Argumento.length == 3){
+                                                String respuesta = modelo.Mostrar_Bandeja_Entrada(Integer.parseInt(Argumento[2]));
+                                                outPrintWriter.print("respuesta");
+                                                outPrintWriter.flush(); 
+                                            } else  {
+                                                outPrintWriter.print("#PARAMERROR#No se he introducido el numero correcto de parametros#");
+                                                outPrintWriter.flush();                                           
+                                            }
+                                        break;
+                                        case "MSALIDA":
+                                            if(Argumento.length == 3){
+                                                String respuesta = modelo.Mostrar_Bandeja_Salida(Integer.parseInt(Argumento[2]));
+                                                outPrintWriter.print("respuesta");
+                                                outPrintWriter.flush(); 
+                                            } else  {
+                                                outPrintWriter.print("#PARAMERROR#No se he introducido el numero correcto de parametros#");
+                                                outPrintWriter.flush();                                           
+                                            }
+                                        break;
+                                        case "LEERCORREO":
+                                            if(Argumento.length == 3){
+                                                String respuesta = modelo.Leer_correo(Integer.parseInt(Argumento[2]));
+                                                outPrintWriter.print("respuesta");
+                                                outPrintWriter.flush(); 
+                                            } else  {
+                                                outPrintWriter.print("#PARAMERROR#No se he introducido el numero correcto de parametros#");
+                                                outPrintWriter.flush();                                           
+                                            }
+                                        break;
+                                        case "CLOSE":
+                                            String respuesta = modelo.cerrar_conexion();
+                                            outPrintWriter.print("respuesta");
+                                            outPrintWriter.flush(); 
+                                            closed = true;
+                                        break;
+                                        default: 
+                                            outPrintWriter.print("#PARAMERROR#No se han introducido parametros#");
+                                            outPrintWriter.flush();
+                                    }
+                                    
+                                } else {
+                                    System.err.println("#PARAMERROR#No se han introducido parametros#");
+                                    outPrintWriter.flush(); 
+                                } 
+                            } while(!closed);
+                        } else {
+                            outPrintWriter.print("#AUTH#ERROR#Usuario o contraseña incorrectos#");
+                            outPrintWriter.flush();
+                        }
+                    } else {
+                        outPrintWriter.print("#AUTH#ERROR#Numero de argumentos incorrecto#");
+                        outPrintWriter.flush();
+                    }
+                } else {
+                    outPrintWriter.print("#AUTH#ERROR#Usted tiene que identificarse en el servidor#");
+                    outPrintWriter.flush();
+                }
             }
-            
-            /*
-            outPrintWriter.print(respuesta + "\r\n" );
-			outPrintWriter.flush();
-			*/
-        } catch (IOException e)
-            {
-			    System.err.println("Error al obtener los flujo de entrada/salida.");
-		    }
+        } catch (IOException e) {
+			System.err.println("Error al obtener los flujo de entrada/salida.");
+	    }
 
     }
     

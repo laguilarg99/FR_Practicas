@@ -9,9 +9,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class modelo {
-    public static String autenticar(String correo, String contraseña)
+    public static Boolean autenticar(String correo, String contraseña)
     {
-        return "";
+        Boolean correcto = false;
+        return correcto;
     }
 
     public static String Leer_correo(int id_correo)
@@ -29,9 +30,8 @@ public class modelo {
         return "";
     }
 
-    public static String cerrar_conexion(){
+    public static String cerrar_conexion()
+    {
         return "#CLOSE#";
     }
-
-
 }
