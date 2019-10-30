@@ -35,55 +35,50 @@ public class controlador implements Runnable
                             outPrintWriter.print("#AUTH#OK#Autenticacion correcta#");
                             outPrintWriter.flush(); 
                             Boolean closed = false;
+                            String respuesta = null;
                             do {
                                 if((peticion = inReader.readLine()) != null){
+                                    Argumento = obtenerArgumentos(peticion);
                                     switch(Argumento[0]) {
                                         case "MENTRADA":
                                             if(Argumento.length == 3){
-                                                String respuesta = modelo.Mostrar_Bandeja_Entrada(Integer.parseInt(Argumento[2]));
-                                                outPrintWriter.print("respuesta");
-                                                outPrintWriter.flush(); 
+                                                respuesta = modelo.Mostrar_Bandeja_Entrada(Integer.parseInt(Argumento[2]));
                                             } else  {
-                                                outPrintWriter.print("#PARAMERROR#No se he introducido el numero correcto de parametros#");
-                                                outPrintWriter.flush();                                           
+                                                respuesta = "#PARAMERROR#No se he introducido el numero correcto de parametros#";
                                             }
                                         break;
                                         case "MSALIDA":
                                             if(Argumento.length == 3){
-                                                String respuesta = modelo.Mostrar_Bandeja_Salida(Integer.parseInt(Argumento[2]));
-                                                outPrintWriter.print("respuesta");
-                                                outPrintWriter.flush(); 
+                                                respuesta = modelo.Mostrar_Bandeja_Salida(Integer.parseInt(Argumento[2]));
                                             } else  {
-                                                outPrintWriter.print("#PARAMERROR#No se he introducido el numero correcto de parametros#");
-                                                outPrintWriter.flush();                                           
+                                                respuesta = "#PARAMERROR#No se he introducido el numero correcto de parametros#";                                        
                                             }
                                         break;
                                         case "LEERCORREO":
                                             if(Argumento.length == 3){
-                                                String respuesta = modelo.Leer_correo(Integer.parseInt(Argumento[2]));
-                                                outPrintWriter.print("respuesta");
-                                                outPrintWriter.flush(); 
+                                                respuesta = modelo.Leer_correo(Integer.parseInt(Argumento[2])); 
                                             } else  {
-                                                outPrintWriter.print("#PARAMERROR#No se he introducido el numero correcto de parametros#");
+                                                respuesta = "#PARAMERROR#No se he introducido el numero correcto de parametros#";
                                                 outPrintWriter.flush();                                           
                                             }
                                         break;
                                         case "CLOSE":
-                                            String respuesta = modelo.cerrar_conexion();
-                                            outPrintWriter.print("respuesta");
-                                            outPrintWriter.flush(); 
+                                            respuesta = modelo.cerrar_conexion();
                                             closed = true;
                                         break;
                                         default: 
-                                            outPrintWriter.print("#PARAMERROR#No se han introducido parametros#");
-                                            outPrintWriter.flush();
+                                            respuesta = "#PARAMERROR#No se han introducido parametros#";
                                     }
+
+                                    outPrintWriter.print(respuesta);
+                                    outPrintWriter.flush(); 
                                     
                                 } else {
                                     System.err.println("#PARAMERROR#No se han introducido parametros#");
                                     outPrintWriter.flush(); 
                                 } 
                             } while(!closed);
+                                socketServicio.close();
                         } else {
                             outPrintWriter.print("#AUTH#ERROR#Usuario o contraseña incorrectos#");
                             outPrintWriter.flush();
