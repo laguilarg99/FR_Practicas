@@ -1,0 +1,26 @@
+{
+    "usuarios": [
+        {
+            "usuario": "usuario1@test.com",
+            "contraseña": "1234",
+            "correos": {
+                "id": 1,
+                "asunto": "Correo dummy 1",
+                "remitente": "Usuario2@test.com",
+                "destinatario": "usuario1@test.com",
+                "texto": "Esto es un texto de prueba"
+            }
+        }
+        {
+            "usuario": "usuario2@test.com",
+            "contraseña": "1234",
+            "correos": {
+                "id": 2,
+                "asunto": "Correo dummy 2",
+                "remitente": "usuario1@test.com",
+                "destinatario": "usuario2@test.com",
+                "texto": "Este es el texto de prueba 2"
+            }
+        }
+    ]
+}
