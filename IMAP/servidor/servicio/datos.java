@@ -32,16 +32,33 @@ public class datos{
 
     public String correosSalida(int index){
         String salida = "#";
-        System.out.println(usuarios.get(index).getNombre());
         for(int i = 0; i < usuarios.get(index).getCorreos().size(); i++)
         {
             if(usuarios.get(index).getCorreos().get(i).getRemitente().equals(usuarios.get(index).getNombre()))
             {
-                System.out.println("\t"+usuarios.get(index).getCorreos().get(index).getVistaPrevia());
-                salida += i + "#" + usuarios.get(index).getCorreos().get(index).getVistaPrevia();
+                salida += i + "#" + usuarios.get(index).getCorreos().get(i).getVistaPrevia();
             }
         } 
         return salida;   
     }
 
+    public String correosEntrada(int index){
+        String salida = "#";
+        for(int i = 0; i < usuarios.get(index).getCorreos().size(); i++)
+        {
+            if(usuarios.get(index).getCorreos().get(i).getReceptor().equals(usuarios.get(index).getNombre()))
+            {
+                salida += i + "#" + usuarios.get(index).getCorreos().get(i).getVistaPrevia();
+            }
+        } 
+        return salida;   
+    }
+
+    public String obtenerCorreo(int correo, int usuario){
+        String salida = "";
+        if(usuarios.get(usuario).getCorreos().size() > correo){
+            salida += usuarios.get(usuario).getCorreos().get(correo).getCorreoCompleto();
+        }
+        return salida;
+    }
 }

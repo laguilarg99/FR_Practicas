@@ -22,7 +22,7 @@ public class prueba{
 			PrintWriter outPrintWriter = new PrintWriter(socketServicio.getOutputStream(),true);
 			BufferedReader inReader = new BufferedReader(new InputStreamReader(socketServicio.getInputStream()));
         
-            String peticion = "#AUTH#coreo#1234#";
+            String peticion = "#AUTH#usuario1@prueba.net#1234pass#";
             
             outPrintWriter.print(peticion + "\r\n" );
 			outPrintWriter.flush();
@@ -65,6 +65,14 @@ public class prueba{
                         System.out.println("Recibido: ");
                         System.out.println(respuesta);
                     break; 
+                    case 4:
+                        peticion = "#LEERCORREO#5#";
+                        outPrintWriter.print(peticion + "\r\n" );
+                        outPrintWriter.flush();
+                        respuesta= inReader.readLine();
+                        System.out.println("Recibido: ");
+                        System.out.println(respuesta);
+                    break; 
                     default:   
                         peticion = "#CLOSE#";
                         outPrintWriter.print(peticion + "\r\n" );
@@ -74,6 +82,7 @@ public class prueba{
                         System.out.println("Recibido: ");
                         System.out.println(respuesta);
                         socketServicio.close();
+                        scanner.close();
                         cerrado = true;
                 }  
         }

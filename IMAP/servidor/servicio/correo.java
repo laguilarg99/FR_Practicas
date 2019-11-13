@@ -32,7 +32,7 @@ public class correo{
         return cuerpo;
     }
 
-    public String getCorreo(){
+    public String getCorreoCompleto(){
         return asunto+"#"+remitente+"#"+receptor+"#"+cuerpo+"#";
     }
 

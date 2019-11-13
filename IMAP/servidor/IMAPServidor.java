@@ -12,7 +12,8 @@ public class IMAPServidor extends Thread {
 		byte []buffer=new byte[256];
 		int bytesLeidos=0;
 		ServerSocket socketServidor = null;
-        Socket socketServicio = null;
+		Socket socketServicio = null;
+
 		try {
 
 			socketServidor = new ServerSocket(port);

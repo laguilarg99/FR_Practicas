@@ -12,19 +12,17 @@ public class modelo {
                 return index;
             }
         }
-        //Datos.usuarios.indexOf(nombre)
-        //Datos.usuarios.get(index)
         return index; //autenticará al usuario y devolverá un true si se hace de forma correcta
     }
 
     public static String Leer_correo(int id_correo, int usuario)
     {
-        return "#LEERCORREO#titulocorreo1#remitente#asunto#texto#";
+        return "#LEERCORREO#" + Datos.obtenerCorreo(id_correo, usuario);
     }
 
     public static String Mostrar_Bandeja_Entrada(int usuario)
     {
-        return "#MENTRADA#idcorreo1#Estado lectura #titulocorreo1#...#idcorreon#titulocorreon#";
+        return "#MENTRADA" + Datos.correosEntrada(usuario);
     }
 
     public static String Mostrar_Bandeja_Salida(int usuario)
