@@ -7,17 +7,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
-
 import servicio.modelo;
 
 public class controlador implements Runnable
 {
-	private Socket socketServicio;
+    private Socket socketServicio;
 	
     public controlador(Socket socketServicio) 
     {
-		this.socketServicio=socketServicio;
+        this.socketServicio=socketServicio;
 	}
 	
     public void run()
@@ -29,13 +27,13 @@ public class controlador implements Runnable
 
             if((peticion = inReader.readLine()) != null){
                 String[] Argumento = obtenerArgumentos(peticion);
+                int usuario = -1;
                 if(Argumento[0].equals("AUTH")){
                     if(Argumento.length == 3){
-                        if(modelo.autenticar(Argumento[1], Argumento[2])){
+                        if((usuario = modelo.autenticar(Argumento[1], Argumento[2])) != -1){
                             outPrintWriter.print("#AUTH#OK#Autenticacion correcta#\r\n");
                             outPrintWriter.flush(); 
                             Boolean closed = false;
-                            String usuario = Argumento[1];
                             String respuesta = null;
                             while(!closed)
                             {

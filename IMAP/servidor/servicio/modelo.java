@@ -1,34 +1,35 @@
 package servicio;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.sql.*;
+import servicio.datos;
 
 public class modelo {
-    public static Boolean autenticar(String correo, String contraseña)
+    private static datos Datos = new datos();
+    
+    public static int autenticar(String correo, String contraseña)
     {
-        Boolean correcto = true;
-        return correcto; //autenticará al usuario y devolverá un true si se hace de forma correcta
+        int index;
+        if((index = Datos.getIndex(correo)) != -1){
+            if(Datos.autenticar(index, contraseña)){
+                return index;
+            }
+        }
+        //Datos.usuarios.indexOf(nombre)
+        //Datos.usuarios.get(index)
+        return index; //autenticará al usuario y devolverá un true si se hace de forma correcta
     }
 
-    public static String Leer_correo(int id_correo, String usuario)
+    public static String Leer_correo(int id_correo, int usuario)
     {
         return "#LEERCORREO#titulocorreo1#remitente#asunto#texto#";
     }
 
-    public static String Mostrar_Bandeja_Entrada(String usuario)
+    public static String Mostrar_Bandeja_Entrada(int usuario)
     {
         return "#MENTRADA#idcorreo1#Estado lectura #titulocorreo1#...#idcorreon#titulocorreon#";
     }
 
-    public static String Mostrar_Bandeja_Salida(String usuario)
+    public static String Mostrar_Bandeja_Salida(int usuario)
     {
-        return "#MSALIDA#idcorreo1#titulocorreo1#...#idcorreon#titulocorreon#";
+        return "#MSALIDA" + Datos.correosSalida(usuario);
     }
 
     public static String cerrar_conexion()
