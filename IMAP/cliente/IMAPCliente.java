@@ -10,43 +10,46 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 
-public class prueba{
+public class IMAPCliente{
 	public static void main(String[] args) {
 
         String host="localhost";
         int port=5756;
         Socket socketServicio = null;
+        Boolean cerrado = true;
+
         try {
 
 			socketServicio = new Socket(host,port);			
 			PrintWriter outPrintWriter = new PrintWriter(socketServicio.getOutputStream(),true);
 			BufferedReader inReader = new BufferedReader(new InputStreamReader(socketServicio.getInputStream()));
             
-            System.out.println("Intoduzca Usuario: ");
-            Scanner scannerUser = new Scanner(System.in);
-            String User =  scannerUser.toString();
-
-            System.out.println("Intoduzca Usuario: ");
-            Scanner scannerPass = new Scanner(System.in);
-            String Password =  scannerPass.toString();
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("\nIntroduzca Usuario: ");
+            String User =  scanner.nextLine();
+            
+            System.out.println("Introduzca Contraseña: ");
+            String Password =  scanner.nextLine();
 
             String peticion = "#AUTH#" + User + "#" + Password + "#";
             //String peticion = "#AUTH#usuario1@prueba.net#1234pass#";
-            
+
             outPrintWriter.print(peticion + "\r\n" );
 			outPrintWriter.flush();
 			String respuesta=new String(inReader.readLine());
-            System.out.println("Recibido: ");
-            System.out.println(respuesta);
-            //inReader.readLine().trim();
+            String[] Autenticacion = obtenerArgumentos(respuesta);
 
-
-            Boolean cerrado = false;
+            if(Autenticacion[1].equals("OK")){
+                System.out.println("\nDatos correctos\nIniciando sesion...\nSesion iniciada\n");
+                cerrado = false;
+            }
+            else{
+                System.out.println("Datos incorrectos, sesion no iniciada\n");
+            }
 
             while(!cerrado)
             {
-                System.out.println("Intoduzca accion");
-                Scanner scanner = new Scanner(System.in);
+                System.out.println("\n\t1. Visualizar bandeja de entrada\n\n\t2. Visualizar bandeja de salida\n\n\t3. Leer correo (introduzca posicion en la lista)\n\n\t4. Cerrar sesion\n\nIntroduzca la acción a realizar:");
                 int opcion =  scanner.nextInt();
                 switch (opcion)
                 {  
@@ -55,32 +58,53 @@ public class prueba{
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
-                        System.out.println("Recibido: ");
-                        System.out.println(respuesta);
+                        String[] BandejaEntrada = obtenerArgumentos(respuesta);
+                        System.out.println("\nIndice\tAsunto\tRemitente\n");
+                        for(int i = 1; i < BandejaEntrada.length; i+=4){
+                            System.out.println(BandejaEntrada[i]+"\t"+BandejaEntrada[i+1]+"\t"+BandejaEntrada[i+2]+"\n");
+                        }
                     break; 
                     case 2:
                         peticion = "#MSALIDA#";
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
-                        System.out.println("Recibido: ");
-                        System.out.println(respuesta);
+                        String[] BandejaSalida = obtenerArgumentos(respuesta);
+                        System.out.println("\nIndice\tAsunto\tReceptor\n");
+                        for(int i = 1; i < BandejaSalida.length; i+=4){
+                            System.out.println(BandejaSalida[i]+"\t"+BandejaSalida[i+1]+"\t"+BandejaSalida[i+3]+"\n");
+                        }
                     break; 
                     case 3:
-                        peticion = "#LEERCORREO#1#";
+                        peticion = "#MENTRADA#";
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
-                        System.out.println("Recibido: ");
-                        System.out.println(respuesta);
-                    break; 
-                    case 4:
-                        peticion = "#LEERCORREO#5#";
+                        BandejaEntrada = obtenerArgumentos(respuesta);
+                        System.out.println("\nBandeja de entrada\nIndice\tAsunto\tRemitente\n");
+                        for(int i = 1; i < BandejaEntrada.length; i+=4){
+                            System.out.println(BandejaEntrada[i]+"\t"+BandejaEntrada[i+1]+"\t"+BandejaEntrada[i+2]+"\n");
+                        }
+                        peticion = "#MSALIDA#";
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
-                        System.out.println("Recibido: ");
-                        System.out.println(respuesta);
+                        BandejaSalida = obtenerArgumentos(respuesta);
+                        System.out.println("\nBandeja de salida\nIndice\tAsunto\tReceptor\n");
+                        for(int i = 1; i < BandejaSalida.length; i+=4){
+                            System.out.println(BandejaSalida[i]+"\t"+BandejaSalida[i+1]+"\t"+BandejaSalida[i+3]+"\n");
+                        }
+                        System.out.println("Introduzca numero de correo que desea leer: ");
+                        String correoLeer = scanner.nextLine();
+                        peticion = "#LEERCORREO#"+ correoLeer + "#";
+                        outPrintWriter.print(peticion + "\r\n" );
+                        outPrintWriter.flush();
+                        respuesta= inReader.readLine();
+                        String[] correo = obtenerArgumentos(respuesta);
+                        System.out.println("\nAsunto: " + correo[1] + "\n");
+                        System.out.println("\nRemitente: " + correo[2] + "\n");
+                        System.out.println("\nReceptor: " + correo[3] + "\n");
+                        System.out.println("\nCuerpo: " + correo[4] + "\n");
                     break; 
                     default:   
                         peticion = "#CLOSE#";
@@ -88,8 +112,7 @@ public class prueba{
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
                         //inReader.readLine().trim();
-                        System.out.println("Recibido: ");
-                        System.out.println(respuesta);
+                        System.out.println("\nSESION FINALIZADA\n");
                         socketServicio.close();
                         scanner.close();
                         cerrado = true;
