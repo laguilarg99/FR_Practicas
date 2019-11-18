@@ -81,23 +81,24 @@ public class IMAPCliente{
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
                         BandejaEntrada = obtenerArgumentos(respuesta);
-                        System.out.println("\nBandeja de entrada\nIndice\tAsunto\tRemitente\n");
+                        System.out.println("\n");
                         for(int i = 1; i < BandejaEntrada.length; i+=4){
                             System.out.println(BandejaEntrada[i]+"\t"+BandejaEntrada[i+1]+"\t"+BandejaEntrada[i+2]+"\n");
                         }
+
                         peticion = "#MSALIDA#";
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
                         BandejaSalida = obtenerArgumentos(respuesta);
-                        System.out.println("\nBandeja de salida\nIndice\tAsunto\tReceptor\n");
                         for(int i = 1; i < BandejaSalida.length; i+=4){
                             System.out.println(BandejaSalida[i]+"\t"+BandejaSalida[i+1]+"\t"+BandejaSalida[i+3]+"\n");
                         }
-                        System.out.println("Introduzca numero de correo que desea leer: ");
-                        String correoLeer = scanner.nextLine();
+
+                        System.out.println("\nIntroduzca numero de correo que desea leer: \n");
+                        int correoLeer = scanner.nextInt();
+
                         peticion = "#LEERCORREO#"+ correoLeer + "#";
-                        System.out.println(peticion);
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
