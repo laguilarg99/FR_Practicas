@@ -38,13 +38,12 @@ public class IMAPCliente{
 			outPrintWriter.flush();
 			String respuesta=new String(inReader.readLine());
             String[] Autenticacion = obtenerArgumentos(respuesta);
-            System.out.println(respuesta);
             if(Autenticacion[1].equals("OK")){
-                System.out.println("\nDatos correctos\nIniciando sesion...\nSesion iniciada\n");
+                System.out.println("\nDatos correctos\nIniciando sesion...\nSesion iniciada");
                 cerrado = false;
             }
             else{
-                System.out.println("Datos incorrectos, sesion no iniciada\n");
+                System.out.println("Datos incorrectos, sesion no iniciada");
             }
 
             while(!cerrado)

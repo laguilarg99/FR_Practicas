@@ -13,16 +13,25 @@ public class datos{
         usuarios.get(0).setCorreo("correo3", "usuario1@prueba.net", "usuario2@prueba.net", "Esto es el tercero correo.");
         usuarios.get(0).setCorreo("correo4", "usuario1@prueba.net", "usuario3@prueba.net", "Esto es el cuarto correo.");
 
+        usuarios.add(new usuario("usuario2@prueba.net","1234pass"));
+        usuarios.get(1).setCorreo("correo1", "usuario2@prueba.net", "usuario1@prueba.net", "Esto es una prueba.");
+        usuarios.get(1).setCorreo("correo2", "usuario2@prueba.net", "usuario3@prueba.net", "Esto es el segundo correo.");
+        usuarios.get(1).setCorreo("correo3", "usuario1@prueba.net", "usuario2@prueba.net", "Esto es el tercero correo.");
+        usuarios.get(1).setCorreo("correo4", "usuario3@prueba.net", "usuario2@prueba.net", "Esto es el cuarto correo.");
+
+        usuarios.add(new usuario("usuario3@prueba.net","1234pass"));
+        usuarios.get(2).setCorreo("correo1", "usuario3@prueba.net", "usuario1@prueba.net", "Esto es una prueba.");
+        usuarios.get(2).setCorreo("correo2", "usuario3@prueba.net", "usuario2@prueba.net", "Esto es el segundo correo.");
+        usuarios.get(2).setCorreo("correo3", "usuario1@prueba.net", "usuario3@prueba.net", "Esto es el tercero correo.");
+        usuarios.get(2).setCorreo("correo4", "usuario2@prueba.net", "usuario3@prueba.net", "Esto es el cuarto correo.");
     }
 
     public int getIndex(String usuario){
         for(int i = 0; i < usuarios.size(); i++){
             if(usuarios.get(i).getNombre().equals(usuario)){
-                System.out.println(usuarios.get(i).getNombre());
                 return i;
             }
         }
-        System.out.println(usuarios.get(0).getNombre());
         return -1;
     }
 

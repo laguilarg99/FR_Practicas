@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -31,16 +32,16 @@ public class controlador implements Runnable
                 if(Argumento[0].equals("AUTH")){
                     if(Argumento.length == 3){
                         if((usuario = modelo.autenticar(Argumento[1], Argumento[2])) != -1){
+                            System.out.println(LocalDateTime.now() + " " + usuario + " Login correcto");
                             outPrintWriter.print("#AUTH#OK#Autenticacion correcta#\r\n");
                             outPrintWriter.flush(); 
                             Boolean closed = false;
                             String respuesta = null;
                             while(!closed)
                             {
-                                System.out.println("recibir argumentos");
                                 if((peticion = inReader.readLine()) != null){
                                     Argumento = obtenerArgumentos(peticion);
-                                    System.out.println("seleccion de accion " + peticion);
+                                    System.out.println(LocalDateTime.now() + " PETICION " +  usuario + " " + peticion);
 
                                     switch(Argumento[0])
                                     {
@@ -49,7 +50,6 @@ public class controlador implements Runnable
                                                 respuesta = modelo.Mostrar_Bandeja_Entrada(usuario);
                                             } else  {
                                                 respuesta = "#PARAMERROR#No se he introducido el numero correcto de parametros#";
-                                                System.err.println("Error al obtener los flujo de entrada/salida.");
                                             }
                                         break;
                                         case "MSALIDA":
@@ -64,7 +64,6 @@ public class controlador implements Runnable
                                                 respuesta = modelo.Leer_correo(Integer.parseInt(Argumento[1]), usuario); 
                                             } else  {
                                                 respuesta = "#PARAMERROR#No se he introducido el numero correcto de parametros#";
-                                                outPrintWriter.flush();                                           
                                             }
                                         break;
                                         case "CLOSE":
@@ -76,11 +75,12 @@ public class controlador implements Runnable
                                     }
                                     respuesta+="\r\n";
                                     
-                                    System.out.println(respuesta);
+                                    System.out.println(LocalDateTime.now() + " RESPUESTA " + usuario + " " + respuesta);
                                     outPrintWriter.print(respuesta);
                                     outPrintWriter.flush(); 
                                     
                                 } else {
+                                    System.out.println(LocalDateTime.now() +" " + usuario + " #PARAMERROR#No se han introducido parametros#");
                                     outPrintWriter.print("#PARAMERROR#No se han introducido parametros#\r\n");
                                     outPrintWriter.flush(); 
                                     closed = true;
@@ -88,11 +88,13 @@ public class controlador implements Runnable
                             } 
                             socketServicio.close();
                         } else {
+                            System.out.println(LocalDateTime.now() + " Intento de login " + peticion);
                             outPrintWriter.print("#AUTH#ERROR#Usuario o contraseña incorrectos#");
                             outPrintWriter.flush();
                             socketServicio.close();
                         }
                     } else {
+                        System.out.println(LocalDateTime.now() + " Intento de login " + peticion);
                         outPrintWriter.print("#AUTH#ERROR#Numero de argumentos incorrecto#");
                         outPrintWriter.flush();
                     }
