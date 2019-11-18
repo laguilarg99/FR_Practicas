@@ -90,6 +90,7 @@ public class controlador implements Runnable
                         } else {
                             outPrintWriter.print("#AUTH#ERROR#Usuario o contraseña incorrectos#");
                             outPrintWriter.flush();
+                            socketServicio.close();
                         }
                     } else {
                         outPrintWriter.print("#AUTH#ERROR#Numero de argumentos incorrecto#");

@@ -38,7 +38,7 @@ public class IMAPCliente{
 			outPrintWriter.flush();
 			String respuesta=new String(inReader.readLine());
             String[] Autenticacion = obtenerArgumentos(respuesta);
-
+            System.out.println(respuesta);
             if(Autenticacion[1].equals("OK")){
                 System.out.println("\nDatos correctos\nIniciando sesion...\nSesion iniciada\n");
                 cerrado = false;
@@ -97,6 +97,7 @@ public class IMAPCliente{
                         System.out.println("Introduzca numero de correo que desea leer: ");
                         String correoLeer = scanner.nextLine();
                         peticion = "#LEERCORREO#"+ correoLeer + "#";
+                        System.out.println(peticion);
                         outPrintWriter.print(peticion + "\r\n" );
                         outPrintWriter.flush();
                         respuesta= inReader.readLine();
