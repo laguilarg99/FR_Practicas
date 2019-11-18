@@ -1,4 +1,0 @@
-#! /bin/bash
-javac -d . ProcesadorYodafy.java 
-javac YodafyServidorIterativo.java
-java YodafyServidorIterativo
